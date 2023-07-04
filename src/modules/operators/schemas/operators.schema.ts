@@ -65,6 +65,10 @@ export class Operators {
 
   @ApiProperty()
   @Prop({ type: String })
+  subClassIcon: string;
+
+  @ApiProperty()
+  @Prop({ type: String })
   faction: string;
 
   @ApiProperty()
@@ -130,6 +134,7 @@ export class Operators {
   @Prop({ type: Array })
   skills: Array<{
     name: string;
+    skillIcon: string;
     variations: {
       level: string | number;
       description: string;
@@ -150,6 +155,7 @@ export class Operators {
   @Prop({ type: Array })
   baseskill: Array<{
     name: string;
+    icon: string;
     level: string;
     effects: string;
     building: string;

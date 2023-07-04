@@ -54,14 +54,14 @@ async function getItemsAndQuantity(masterList, itemList, qtyList) {
       masterList.length === 0 ||
       !masterList.some((obj) => obj.name === newElement)
     ) {
-      const test = await fetch(newElement);
-      const text = await test.text();
-      const html = parse(text);
-      const itemIcon = html
-        .querySelector('.item-icon-cell img')
-        .getAttribute('src');
+      // const test = await fetch(newElement);
+      // const text = await test.text();
+      // const html = parse(text);
+      // const itemIcon = html
+      //   .querySelector('.item-icon-cell img')
+      //   .getAttribute('src');
       masterList.push({
-        icon: itemIcon,
+        //icon: itemIcon,
         name: newElement,
         amount: Number(qtyList[index].text.replace('x', '')),
       });

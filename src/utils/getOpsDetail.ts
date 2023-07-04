@@ -143,6 +143,9 @@ export const opsDetail = async (url) => {
     .querySelectorAll('.skill-cell')
     .map((skill, i) => {
       const name = skill.querySelector('.skill-title-cell a:last-child');
+      const skillIcon = skill
+        .querySelector('.skill-title-cell img')
+        ?.getAttribute('src');
       const rangeBoxes = skill.querySelectorAll('.skill-range-box .range-box');
       const skillRanges = rangeBoxes.map((boxes) => {
         const currCells = boxes.querySelectorAll('.range-cell');
@@ -161,6 +164,7 @@ export const opsDetail = async (url) => {
       });
       return {
         name: name.rawText.replace(/\n/g, ''),
+        skillIcon: skillIcon,
         variations: Array.from({ length: 10 }, (_, i) => i + 1).map((i) => {
           return {
             level: i < 8 ? i : i === 8 ? 'M1' : i === 9 ? 'M2' : 'M3',
@@ -199,6 +203,9 @@ export const opsDetail = async (url) => {
     );
     modulo.forEach((modulos) => {
       const moduleName = modulos.querySelector('.module-title a').rawText;
+      const moduleIcon = modulos
+        .querySelector('.module-image img')
+        ?.getAttribute('src');
       const moduleAttribute = {};
       const moduleAttributeNames = modulos
         .querySelectorAll('.module-row-3 > table tr > th')
@@ -272,6 +279,7 @@ export const opsDetail = async (url) => {
         if (!modules[0].name) modules.pop();
         modules.push({
           name: moduleName,
+          icon: moduleIcon,
           trust: modulos
             .querySelector('.module-trust')
             .rawText.replace(/\n/g, ''),
@@ -286,6 +294,9 @@ export const opsDetail = async (url) => {
 
   const base = operators.querySelectorAll('.building-buff-cell').map((el) => {
     const name = el.querySelector('.title-cell').rawText;
+    const icon = el
+      .querySelector('.right-cell-building img')
+      .getAttribute('src');
     const level = el
       .querySelector('.level-cell img[src]')
       ?.getAttribute('src')?.[41]
@@ -299,7 +310,7 @@ export const opsDetail = async (url) => {
     const building = el
       .querySelector('.buff-type-cell')
       .rawText.replace(/\n/g, '');
-    return { name, level, effects, building };
+    return { name, icon, level, effects, building };
   });
 
   const characterInfo = {};
@@ -352,6 +363,9 @@ export const opsDetail = async (url) => {
       : 'not have jp VA';
   const stat = await getStat(url);
   const cost = await getCosts(url);
+  const subClassIcon = operators
+    .querySelector('.subprofession-cell img')
+    ?.getAttribute('src');
 
   const op = new Operators();
   op.opId = url.replace('https://gamepress.gg/arknights/operator/', '');
@@ -391,6 +405,7 @@ export const opsDetail = async (url) => {
   op.va = jpva;
   op.attack_type = attackType;
   op.faction = faction;
+  op.subClassIcon = subClassIcon;
 
   return op;
 };
