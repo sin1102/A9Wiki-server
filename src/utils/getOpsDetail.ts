@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 import { parse } from 'node-html-parser';
 import { Operators } from '../modules/operators/schemas/operators.schema';
-import { getCosts } from './getCost';
 import { getStat } from './getStat';
 
 export const opsDetail = async (url) => {
@@ -258,6 +257,13 @@ export const opsDetail = async (url) => {
             .filter(Boolean),
         ),
       ];
+      const cost = modulos.querySelectorAll('.material-cell').map((item) => {
+        const icon = item.querySelector('.item-image').getAttribute('src');
+        const amount = checkForExistence(
+          item.querySelector('.material-quantity'),
+        );
+        return { icon: icon, amount: amount };
+      });
       const moduleData = {
         level: i,
         trait:
@@ -269,6 +275,7 @@ export const opsDetail = async (url) => {
         attributes: moduleAttribute,
         talent_changes: talent,
         unlock: unlockCriteria,
+        cost: cost,
       };
       const existingModuleIndex = modules.findIndex(
         (moduler) => moduler.name === moduleName,
@@ -362,10 +369,56 @@ export const opsDetail = async (url) => {
           .textContent.replace(/\n/g, '')
       : 'not have jp VA';
   const stat = await getStat(url);
-  const cost = await getCosts(url);
   const subClassIcon = operators
     .querySelector('.subprofession-cell img')
     ?.getAttribute('src');
+
+  const cost17 = operators
+    .querySelectorAll('.skill-material-cost17 tr:not(:first-child)')
+    .map((td) => {
+      const lvl = td.querySelector('td:first-child').rawText;
+      const cost = td.querySelectorAll('.material-cell').map((item) => {
+        const icon = item.querySelector('.item-image').getAttribute('src');
+        const amount = item.querySelector('.material-quantity').rawText;
+        return { icon: icon, amount: amount };
+      });
+      return { lvl: lvl, cost: cost };
+    });
+  let lv = 1;
+  const cost810 = operators
+    .querySelectorAll('.skill-material-cost810 tr:not(:first-child)')
+    .map((td) => {
+      const lvl = lv;
+      const time = td.querySelector('.time-cell').rawText;
+      const cost = td.querySelectorAll('.material-cell').map((item) => {
+        const icon = item.querySelector('.item-image').getAttribute('src');
+        const amount = item.querySelector('.material-quantity').rawText;
+        return { icon: icon, amount: amount };
+      });
+      if (time == '24h') lv++;
+      return { lvl: lvl, time: time, cost: cost };
+    });
+
+  let eliteCost = [];
+  const e1Cost = operators
+    .querySelectorAll('.e1-material-cost .material-cell')
+    .map((item) => {
+      const icon = item.querySelector('.item-image').getAttribute('src');
+      const amount = item.querySelector('.material-quantity').rawText;
+      return { icon: icon, amount: amount };
+    });
+  const e2Cost = operators
+    .querySelectorAll('.e2-material-cost .material-cell')
+    .map((item) => {
+      const icon = item.querySelector('.item-image').getAttribute('src');
+      const amount = item.querySelector('.material-quantity').rawText;
+      return { icon: icon, amount: amount };
+    });
+
+  eliteCost = [
+    { elite: 1, cost: e1Cost },
+    { elite: 2, cost: e2Cost },
+  ];
 
   const op = new Operators();
   op.opId = url.replace('https://gamepress.gg/arknights/operator/', '');
@@ -383,7 +436,6 @@ export const opsDetail = async (url) => {
   op.baseskill = base;
   op.biography = biography;
   op.class = clas;
-  op.costs = cost;
   op.description = descriptionArr[1] as unknown as string;
   op.headhunting = JSON.parse(obtainable[0]);
   op.lore = characterInfo;
@@ -406,6 +458,9 @@ export const opsDetail = async (url) => {
   op.attack_type = attackType;
   op.faction = faction;
   op.subClassIcon = subClassIcon;
+  op.costs17 = cost17;
+  op.costs810 = cost810;
+  op.costs_elite = eliteCost;
 
   return op;
 };

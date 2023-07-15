@@ -26,7 +26,7 @@ export class OperatorsService {
         );
         updateInfo.icon = opList[i].icon;
         updateInfo.classIcon = opList[i].classIcon;
-        await this.operatosModel.findOneAndUpdate(
+        await this.operatosModel.findOneAndReplace(
           { opId: opList[i].name },
           updateInfo,
         );
@@ -46,9 +46,17 @@ export class OperatorsService {
 
     return { updated: count[0], created: count[1] };
   }
+  async findById(id: string): Promise<Operators> {
+    const op = await this.operatosModel
+      .findOne({ opId: id })
+      .select({ __v: 0, _id: 0 });
+    if (!op) throw new NotFoundException();
+    return op;
+  }
+
   async findByName(name: string): Promise<Operators> {
     const op = await this.operatosModel
-      .findOne({ opId: name })
+      .findOne({ name: name })
       .select({ __v: 0, _id: 0 });
     if (!op) throw new NotFoundException();
     return op;

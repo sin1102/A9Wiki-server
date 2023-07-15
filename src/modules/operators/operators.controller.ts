@@ -21,9 +21,17 @@ export class OperatorsControler {
 
   @ApiOkResponse({ type: Operators, description: 'ok' })
   @ApiOperation({ summary: 'Find operator by name' })
-  @Get(':name')
+  @Get('/name/:name')
   async findByName(@Param() nameParam: nameParam): Promise<Operators> {
     const op = await this.operatorsService.findByName(nameParam.name);
+    return op;
+  }
+
+  @ApiOkResponse({ type: Operators, description: 'ok' })
+  @ApiOperation({ summary: 'Find operator by id' })
+  @Get('/id/:opid')
+  async findById(@Param('opid') idParam: string): Promise<Operators> {
+    const op = await this.operatorsService.findById(idParam);
     return op;
   }
 

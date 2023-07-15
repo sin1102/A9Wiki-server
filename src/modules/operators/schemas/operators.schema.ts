@@ -111,7 +111,15 @@ export class Operators {
 
   @ApiProperty()
   @Prop({ type: Array })
-  costs: { icon: string; name: string; amount: number }[];
+  costs17: any[];
+
+  @ApiProperty()
+  @Prop({ type: Array })
+  costs810: any[];
+
+  @ApiProperty()
+  @Prop({ type: Array })
+  costs_elite: any[];
 
   @ApiProperty()
   @Prop({ type: Array })
@@ -182,6 +190,7 @@ export class Operators {
   availability: string;
 
   @ApiProperty()
+  @Prop({ type: Array })
   release_dates: { cn: string; global: string };
 
   @ApiProperty()
