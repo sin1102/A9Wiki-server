@@ -15,4 +15,10 @@ export class opDtos {
 
   @ApiProperty()
   icon: string;
+
+  @ApiProperty()
+  classIcon: string;
+
+  @ApiProperty()
+  subClassIcon: string;
 }
