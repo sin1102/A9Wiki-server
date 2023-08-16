@@ -50,23 +50,24 @@ export class TierService {
   }
 
   async findAll(): Promise<Tier[]> {
-    const sortOrder = ['EX', 'S', 'A', 'B', 'C', 'D', 'E', 'X'];
+    // const sortOrder = ['EX', 'S', 'A', 'B', 'C', 'D', 'E', 'X'];
 
-    return await this.tierModel.aggregate([
-      {
-        $addFields: {
-          tierOrder: { $indexOfArray: [sortOrder, '$tiers.tier'] },
-        },
-      },
-      { $unwind: '$tiers' },
-      { $sort: { tierOrder: 1 } },
-      {
-        $group: {
-          _id: '$_id',
-          classes: { $first: '$classes' },
-          tiers: { $push: '$tiers' },
-        },
-      },
-    ]);
+    // return await this.tierModel.aggregate([
+    //   {
+    //     $addFields: {
+    //       tierOrder: { $indexOfArray: [sortOrder, '$tiers.tier'] },
+    //     },
+    //   },
+    //   { $unwind: '$tiers' },
+    //   { $sort: { tierOrder: 1 } },
+    //   {
+    //     $group: {
+    //       _id: '$_id',
+    //       classes: { $first: '$classes' },
+    //       tiers: { $push: '$tiers' },
+    //     },
+    //   },
+    // ]);
+    return await this.tierModel.find();
   }
 }

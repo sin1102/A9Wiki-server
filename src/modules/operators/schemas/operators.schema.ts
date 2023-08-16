@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
 export type OperatorsDocument = Operators & Document;
@@ -7,6 +7,10 @@ export type OperatorsDocument = Operators & Document;
   timestamps: true,
 })
 export class Operators {
+  @ApiProperty()
+  @Prop({ type: Types.ObjectId })
+  _id: Types.ObjectId;
+
   @ApiProperty({ type: String, required: false })
   @Prop({ type: String })
   opId: string;

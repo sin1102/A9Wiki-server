@@ -5,12 +5,14 @@ import { OperatorsModule } from './modules/operators/operators.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { ClassesModule } from './modules/classes/classes.module';
 import { TierModule } from './modules/tier/tier.module';
+import { BannersModule } from './modules/banners/banners.module';
 @Module({
   imports: [
     OperatorsModule,
     TagsModule,
     ClassesModule,
     TierModule,
+    BannersModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env.dev',
